@@ -1,8 +1,7 @@
 /* eslint-disable no-undef */
 import genDiff from '../index.js';
 
-test('gendDiff', () => {
-  const expected = `{
+const expected = `{
    - follow: false
      host: hexlet.io
    - proxy: 123.234.53.22
@@ -10,5 +9,11 @@ test('gendDiff', () => {
    + timeout: 20
    + verbose: true
 }`;
+
+test('genDiff JSON', () => {
   expect(genDiff('__fixtures__/file1.json', '__fixtures__/file2.json')).toEqual(expected);
+});
+
+test('genDiff YAML', () => {
+  expect(genDiff('__fixtures__/file1.yaml', '__fixtures__/file2.yml')).toEqual(expected);
 });

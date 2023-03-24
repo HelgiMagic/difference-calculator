@@ -1,4 +1,4 @@
-name: my-check
+name: hello-world
 on: push
 jobs:
   build:

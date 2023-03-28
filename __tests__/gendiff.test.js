@@ -22,7 +22,7 @@ const expectedRecursive = `{
         }
         setting6: {
             doge: {
-              - wow:
+              - wow: 
               + wow: so much
             }
             key: value
@@ -63,4 +63,8 @@ test('genDiff YAML', () => {
 
 test('gendiff JSON recursive', () => {
   expect(genDiff('__fixtures__/file1hard.json', '__fixtures__/file2hard.json')).toEqual(expectedRecursive);
+});
+
+test('gendiff YAML recursive', () => {
+  expect(genDiff('__fixtures__/file1hard.yaml', '__fixtures__/file2hard.yml')).toEqual(expectedRecursive);
 });

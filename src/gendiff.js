@@ -14,6 +14,7 @@ const isObject = (value) => typeof value === 'object' && value !== null && !Arra
 const getName = (item) => item.name;
 const getValue = (item) => item.value;
 const getChange = (item) => item.isChanged;
+const getDepth = (item) => item.depth;
 const generateSpaces = (spaceCount) => {
   const result = [];
   for (let i = 0; i < spaceCount; i += 1) {
@@ -69,18 +70,22 @@ const generateComparedTree = (obj1, obj2) => {
 
     return result;
   };
-  return iter(obj1, obj2, 0);
+  return iter(obj1, obj2, 1);
 };
 
 const formatTree = (tree, style = 'stylish') => {
   let space;
+  let closingSpace;
   const result = tree.reduce((acc, item) => {
     const name = getName(item);
     const [value, changed] = getValue(item);
     const change = getChange(item);
-    const spaceCount = item.depth * 4 - 2;
+    const depth = getDepth(item);
+    const spaceCount = depth * 4 - 2;
+    const closingSpaceCount = (depth - 1) * 4;
     const itemHasChildren = hasChildren(item);
     space = generateSpaces(spaceCount);
+    closingSpace = generateSpaces(closingSpaceCount);
     let string;
     let secondString;
     switch (change) {
@@ -110,7 +115,7 @@ const formatTree = (tree, style = 'stylish') => {
         throw new Error(`Unknown change: '${change}'!`);
     }
   }, ['{']);
-  return `${result.join('\n  ')}\n${space}}`;
+  return `${result.join('\n')}\n${closingSpace}}`;
 };
 
 const genDiff = (filepath1, filepath2) => {

@@ -15,7 +15,7 @@ const getName = (item) => item.name;
 const getValue = (item) => item.value;
 const getChange = (item) => item.isChanged;
 const generateSpaces = (spaceCount) => {
-  const result = []
+  const result = [];
   for (let i = 0; i < spaceCount; i += 1) {
     result.push(' ');
   }
@@ -30,17 +30,17 @@ const generateComparedTree = (obj1, obj2) => {
       const value = [];
       if (isObject(object1[key]) && isObject(object2[key])) {
         return {
-          name: key, isChanged: 'changed', value, depth, children: iter(object1[key], object2[key], depth + 1),
+          name: key, isChanged: 'changed inside', value, depth, children: iter(object1[key], object2[key], depth + 1),
         };
       } if (isObject(object1[key]) && has(object2, key)) {
         return {
-          name: key, isChanged: 'changed special', value: [object2[key]], depth, children: iter(object1[key], object1[key], depth + 1),
+          name: key, isChanged: 'changed', value: [object2[key]], depth, children: iter(object1[key], object1[key], depth + 1),
         };
       } if (isObject(object1[key])) {
         return {
           name: key, isChanged: 'deleted', value, depth, children: iter(object1[key], object1[key], depth + 1),
         };
-      }  if (isObject(object2[key])) {
+      } if (isObject(object2[key])) {
         return {
           name: key, isChanged: 'added', value, depth, children: iter(object2[key], object2[key], depth + 1),
         };
@@ -79,43 +79,37 @@ const formatTree = (tree, style = 'stylish') => {
     const [value, changed] = getValue(item);
     const change = getChange(item);
     const spaceCount = item.depth * 4 - 2;
+    const itemHasChildren = hasChildren(item);
     space = generateSpaces(spaceCount);
-    if (hasChildren(item) && change === 'changed') {
-      acc.push(`${space}  ${name}: ${formatTree(item.children)}`);
-      return acc;
-    }
-    if (hasChildren(item) && change === 'added') {
-      acc.push(`${space}+ ${name}: ${formatTree(item.children)}`);
-      return acc;
-    }
-    if (hasChildren(item) && change === 'changed special') {
-      acc.push(`${space}- ${name}: ${formatTree(item.children)}`);
-      acc.push(`${space}+ ${name}: ${value}`);
-      return acc;
-    }
-    if (hasChildren(item) && change === 'deleted') {
-      acc.push(`${space}- ${name}: ${formatTree(item.children)}`);
-      return acc;
-    }
+    let string;
+    let secondString;
     switch (change) {
       case 'added':
-        acc.push(`${space}+ ${name}: ${value}`);
+        string = itemHasChildren ? `${space}+ ${name}: ${formatTree(item.children)}` : `${space}+ ${name}: ${value}`;
+        acc.push(string);
         return acc;
       case 'deleted':
-        acc.push(`${space}- ${name}: ${value}`);
+        string = itemHasChildren ? `${space}- ${name}: ${formatTree(item.children)}` : `${space}- ${name}: ${value}`;
+        acc.push(string);
         return acc;
       case 'not changed':
-        acc.push(`${space}  ${name}: ${value}`);
+        string = `${space}  ${name}: ${value}`;
+        acc.push(string);
+        return acc;
+      case 'changed inside':
+        string = `${space}  ${name}: ${formatTree(item.children)}`;
+        acc.push(string);
         return acc;
       case 'changed':
-        acc.push(`${space}- ${name}: ${value}`);
-        acc.push(`${space}+ ${name}: ${changed}`);
+        string = itemHasChildren ? `${space}- ${name}: ${formatTree(item.children)}` : `${space}- ${name}: ${value}`;
+        secondString = itemHasChildren ? `${space}+ ${name}: ${value}` : `${space}+ ${name}: ${changed}`;
+        acc.push(string);
+        acc.push(secondString);
         return acc;
       default:
-        console.log('ашипка');
+        throw new Error(`Unknown change: '${change}'!`);
     }
-    return acc;
-  }, [`{`]);
+  }, ['{']);
   return `${result.join('\n  ')}\n${space}}`;
 };
 

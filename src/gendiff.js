@@ -123,7 +123,7 @@ const formatTree = (tree, style) => {
   return 'unknown format';
 };
 
-const genDiff = (filepath1, filepath2, format) => {
+const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const normFilepath1 = normalizeFilePath(filepath1);
   const normFilepath2 = normalizeFilePath(filepath2);
   const file1 = fs.readFileSync(normFilepath1);

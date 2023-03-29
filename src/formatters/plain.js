@@ -8,7 +8,6 @@ const getChildren = (item) => item.children;
 
 const plain = (tree1) => {
   const iter = (tree, path) => {
-    let string;
     const result = tree.flatMap((item) => {
       const name = path.length > 0 ? `${path}.${getName(item)}` : getName(item);
       const change = getChange(item);
@@ -19,24 +18,19 @@ const plain = (tree1) => {
       const children = getChildren(item);
       switch (change) {
         case 'added':
-          string = itemHasChildren
+          return itemHasChildren
             ? `Property '${name}' was added with value: [complex value]`
             : `Property '${name}' was added with value: ${value}`;
-          return string;
         case 'deleted':
-          string = `Property '${name}' was removed`;
-          return string;
+          return `Property '${name}' was removed`;
         case 'changed inside':
-          string = iter(children, name);
-          return string;
+          return iter(children, name);
         case 'changed':
-          string = itemHasChildren
+          return itemHasChildren
             ? `Property '${name}' was updated. From [complex value] to ${value}`
             : `Property '${name}' was updated. From ${value} to ${changed}`;
-          return string;
         case 'changed to obj':
-          string = `Property '${name}' was updated. From ${value} to [complex value]`;
-          return string;
+          return `Property '${name}' was updated. From ${value} to [complex value]`;
         default:
           return [];
       }

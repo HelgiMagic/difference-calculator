@@ -76,7 +76,6 @@ const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const object2 = convertToObject(normFilepath2, file2);
   const tree = generateComparedTree(object1, object2);
   const result = formatTree(tree, format);
-  console.log(result);
   return result;
 };
 

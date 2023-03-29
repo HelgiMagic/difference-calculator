@@ -9,3 +9,5 @@ gendiff yaml example:
 [![asciicast](https://asciinema.org/a/JIJZNSwhCntKFg6PYcxjIAQcQ.svg)](https://asciinema.org/a/JIJZNSwhCntKFg6PYcxjIAQcQ)
 gendiff recursive example:
 [![asciicast](https://asciinema.org/a/WvCuA7nbDV9FzlNbM3THvbpNv.svg)](https://asciinema.org/a/WvCuA7nbDV9FzlNbM3THvbpNv)
+gendiff plain format:
+[![asciicast](https://asciinema.org/a/vnInIqtHygbRuk1kpM2nscFVu.svg)](https://asciinema.org/a/vnInIqtHygbRuk1kpM2nscFVu)

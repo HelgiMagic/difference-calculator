@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import has from 'lodash/has.js';
 
 const hasChildren = (item) => has(item, 'children');
@@ -26,33 +27,31 @@ const stylish = (treeMain) => {
       const children = getChildren(item);
       switch (change) {
         case 'added':
-          acc.push(itemHasChildren
+          const addString = itemHasChildren
             ? generateString(item, iter(children, depth + 1), space, '+')
-            : generateString(item, value, space, '+'));
-          return acc;
+            : generateString(item, value, space, '+');
+          return [...acc, addString];
         case 'deleted':
-          acc.push(itemHasChildren
+          const delString = itemHasChildren
             ? generateString(item, iter(children, depth + 1), space, '-')
-            : generateString(item, value, space, '-'));
-          return acc;
+            : generateString(item, value, space, '-');
+          return [...acc, delString];
         case 'not changed':
-          acc.push(generateString(item, value, space, ' '));
-          return acc;
+          return [...acc, generateString(item, value, space, ' ')];
         case 'changed inside':
-          acc.push(generateString(item, iter(children, depth + 1), space, ' '));
-          return acc;
+          return [...acc, generateString(item, iter(children, depth + 1), space, ' ')];
         case 'changed':
-          acc.push(itemHasChildren
+          const string = itemHasChildren
             ? generateString(item, iter(children, depth + 1), space, '-')
-            : generateString(item, value, space, '-'));
-          acc.push(itemHasChildren
+            : generateString(item, value, space, '-');
+          const secondString = itemHasChildren
             ? generateString(item, value, space, '+')
-            : generateString(item, changed, space, '+'));
-          return acc;
+            : generateString(item, changed, space, '+');
+          return [...acc, string, secondString];
         case 'changed to obj':
-          acc.push(generateString(item, value, space, '-'));
-          acc.push(generateString(item, iter(children, depth + 1), space, '+'));
-          return acc;
+          const valString = generateString(item, value, space, '-');
+          const objString = generateString(item, iter(children, depth + 1), space, '+');
+          return [...acc, valString, objString];
         default:
           throw new Error(`Unknown change: '${change}'!`);
       }

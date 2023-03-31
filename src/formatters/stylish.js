@@ -6,57 +6,52 @@ const getValue = (item) => item.value;
 const getChange = (item) => item.isChanged;
 const getDepth = (item) => item.depth;
 const getChildren = (item) => item.children;
-const generateSpaces = (spaceCount) => {
-  const result = [];
-  for (let i = 0; i < spaceCount; i += 1) {
-    result.push(' ');
-  }
-  return result.join('');
+const generateSpaces = (spaceCount) => ' '.repeat(spaceCount);
+const generateString = (item, value, specialSign) => {
+  const name = getName(item);
+  const depth = getDepth(item);
+  const spaceCount = depth * 4 - 2;
+  const space = generateSpaces(spaceCount);
+  return `${space}${specialSign} ${name}: ${value}`;
 };
 const stylish = (tree) => {
-  let space;
   let closingSpace;
   const result = tree.reduce((acc, item) => {
-    const name = getName(item);
     const [value, changed] = getValue(item);
     const change = getChange(item);
-    const depth = getDepth(item);
     const itemHasChildren = hasChildren(item);
     const children = getChildren(item);
-    const spaceCount = depth * 4 - 2;
-    const closingSpaceCount = (depth - 1) * 4;
-    space = generateSpaces(spaceCount);
+
+    const closingSpaceCount = (getDepth(item) - 1) * 4;
     closingSpace = generateSpaces(closingSpaceCount);
-    let string;
-    let secondString;
     switch (change) {
       case 'added':
-        string = itemHasChildren ? `${space}+ ${name}: ${stylish(children)}` : `${space}+ ${name}: ${value}`;
-        acc.push(string);
+        acc.push(itemHasChildren
+          ? generateString(item, stylish(children), '+')
+          : generateString(item, value, '+'));
         return acc;
       case 'deleted':
-        string = itemHasChildren ? `${space}- ${name}: ${stylish(children)}` : `${space}- ${name}: ${value}`;
-        acc.push(string);
+        acc.push(itemHasChildren
+          ? generateString(item, stylish(children), '-')
+          : generateString(item, value, '-'));
         return acc;
       case 'not changed':
-        string = `${space}  ${name}: ${value}`;
-        acc.push(string);
+        acc.push(generateString(item, value, ' '));
         return acc;
       case 'changed inside':
-        string = `${space}  ${name}: ${stylish(children)}`;
-        acc.push(string);
+        acc.push(generateString(item, stylish(children), ' '));
         return acc;
       case 'changed':
-        string = itemHasChildren ? `${space}- ${name}: ${stylish(children)}` : `${space}- ${name}: ${value}`;
-        secondString = itemHasChildren ? `${space}+ ${name}: ${value}` : `${space}+ ${name}: ${changed}`;
-        acc.push(string);
-        acc.push(secondString);
+        acc.push(itemHasChildren
+          ? generateString(item, stylish(children), '-')
+          : generateString(item, value, '-'));
+        acc.push(itemHasChildren
+          ? generateString(item, value, '+')
+          : generateString(item, changed, '+'));
         return acc;
       case 'changed to obj':
-        string = `${space}- ${name}: ${value}`;
-        secondString = `${space}+ ${name}: ${stylish(children)}`;
-        acc.push(string);
-        acc.push(secondString);
+        acc.push(generateString(item, value, '-'));
+        acc.push(generateString(item, stylish(children), '+'));
         return acc;
       default:
         throw new Error(`Unknown change: '${change}'!`);

@@ -12,59 +12,55 @@ const normalizeFilePath = (filepath) => {
 };
 const isObject = (value) => typeof value === 'object' && value !== null && !Array.isArray(value);
 
-const generateComparedTree = (obj1, obj2) => {
-  const iter = (object1, object2, depth) => {
-    const keys = [...new Set([...Object.keys(object1), ...Object.keys(object2)])].sort();
+const generateComparedTree = (object1, object2) => {
+  const keys = [...new Set([...Object.keys(object1), ...Object.keys(object2)])].sort();
 
-    const result = keys.map((key) => {
-      let isChanged;
-      const value = [];
-      if (isObject(object1[key]) && isObject(object2[key])) {
-        return {
-          name: key, isChanged: 'changed inside', value, depth, children: iter(object1[key], object2[key], depth + 1),
-        };
-      } if (isObject(object1[key]) && has(object2, key)) {
-        return {
-          name: key, isChanged: 'changed', value: [object2[key]], depth, children: iter(object1[key], object1[key], depth + 1),
-        };
-      } if (has(object1, key) && isObject(object2[key])) {
-        return {
-          name: key, isChanged: 'changed to obj', value: [object1[key]], depth, children: iter(object2[key], object2[key], depth + 1),
-        };
-      } if (isObject(object1[key])) {
-        return {
-          name: key, isChanged: 'deleted', value, depth, children: iter(object1[key], object1[key], depth + 1),
-        };
-      } if (isObject(object2[key])) {
-        return {
-          name: key, isChanged: 'added', value, depth, children: iter(object2[key], object2[key], depth + 1),
-        };
-      }
-      if (has(object1, key) && !has(object2, key)) {
-        isChanged = 'deleted';
-        value.push(object1[key]);
-      } else if (!has(object1, key) && has(object2, key)) {
-        isChanged = 'added';
-        value.push(object2[key]);
-      } else if (object1[key] === object2[key]) {
-        isChanged = 'not changed';
-        value.push(object1[key]);
-      } else if (object1[key] !== object2[key]) {
-        isChanged = 'changed';
-        value.push(object1[key]);
-        value.push(object2[key]);
-      }
+  const result = keys.map((key) => {
+    let isChanged;
+    const value = [];
+    if (isObject(object1[key]) && isObject(object2[key])) {
       return {
-        name: key,
-        isChanged,
-        value,
-        depth,
+        name: key, isChanged: 'changed inside', value, children: generateComparedTree(object1[key], object2[key]),
       };
-    });
+    } if (isObject(object1[key]) && has(object2, key)) {
+      return {
+        name: key, isChanged: 'changed', value: [object2[key]], children: generateComparedTree(object1[key], object1[key]),
+      };
+    } if (has(object1, key) && isObject(object2[key])) {
+      return {
+        name: key, isChanged: 'changed to obj', value: [object1[key]], children: generateComparedTree(object2[key], object2[key]),
+      };
+    } if (isObject(object1[key])) {
+      return {
+        name: key, isChanged: 'deleted', value, children: generateComparedTree(object1[key], object1[key]),
+      };
+    } if (isObject(object2[key])) {
+      return {
+        name: key, isChanged: 'added', value, children: generateComparedTree(object2[key], object2[key]),
+      };
+    }
+    if (has(object1, key) && !has(object2, key)) {
+      isChanged = 'deleted';
+      value.push(object1[key]);
+    } else if (!has(object1, key) && has(object2, key)) {
+      isChanged = 'added';
+      value.push(object2[key]);
+    } else if (object1[key] === object2[key]) {
+      isChanged = 'not changed';
+      value.push(object1[key]);
+    } else if (object1[key] !== object2[key]) {
+      isChanged = 'changed';
+      value.push(object1[key]);
+      value.push(object2[key]);
+    }
+    return {
+      name: key,
+      isChanged,
+      value,
+    };
+  });
 
-    return result;
-  };
-  return iter(obj1, obj2, 1);
+  return result;
 };
 
 const genDiff = (filepath1, filepath2, format = 'stylish') => {

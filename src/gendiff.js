@@ -2,6 +2,7 @@ import { cwd } from 'process';
 import path from 'path';
 import has from 'lodash/has.js';
 import fs from 'fs';
+import sortBy from 'lodash/sortBy.js';
 import convertToObject from './parsers.js';
 import formatTree from './formatters/index.js';
 
@@ -13,9 +14,10 @@ const normalizeFilePath = (filepath) => {
 const isObject = (value) => typeof value === 'object' && value !== null && !Array.isArray(value);
 
 const generateComparedTree = (object1, object2) => {
-  const keys = [...new Set([...Object.keys(object1), ...Object.keys(object2)])].sort();
+  const keys = [...new Set([...Object.keys(object1), ...Object.keys(object2)])];
+  const normKeys = sortBy(keys);
 
-  const result = keys.map((key) => {
+  const result = normKeys.map((key) => {
     const value = [];
     if (isObject(object1[key]) && isObject(object2[key])) {
       return {

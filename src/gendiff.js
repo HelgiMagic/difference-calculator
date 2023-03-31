@@ -16,7 +16,6 @@ const generateComparedTree = (object1, object2) => {
   const keys = [...new Set([...Object.keys(object1), ...Object.keys(object2)])].sort();
 
   const result = keys.map((key) => {
-    let isChanged;
     const value = [];
     if (isObject(object1[key]) && isObject(object2[key])) {
       return {
@@ -40,24 +39,31 @@ const generateComparedTree = (object1, object2) => {
       };
     }
     if (has(object1, key) && !has(object2, key)) {
-      isChanged = 'deleted';
-      value.push(object1[key]);
-    } else if (!has(object1, key) && has(object2, key)) {
-      isChanged = 'added';
-      value.push(object2[key]);
-    } else if (object1[key] === object2[key]) {
-      isChanged = 'not changed';
-      value.push(object1[key]);
-    } else if (object1[key] !== object2[key]) {
-      isChanged = 'changed';
-      value.push(object1[key]);
-      value.push(object2[key]);
+      return {
+        name: key,
+        isChanged: 'deleted',
+        value: [object1[key]],
+      };
+    } if (!has(object1, key) && has(object2, key)) {
+      return {
+        name: key,
+        isChanged: 'added',
+        value: [object2[key]],
+      };
+    } if (object1[key] === object2[key]) {
+      return {
+        name: key,
+        isChanged: 'not changed',
+        value: [object1[key]],
+      };
+    } if (object1[key] !== object2[key]) {
+      return {
+        name: key,
+        isChanged: 'changed',
+        value: [object1[key], object2[key]],
+      };
     }
-    return {
-      name: key,
-      isChanged,
-      value,
-    };
+    return 'error';
   });
 
   return result;

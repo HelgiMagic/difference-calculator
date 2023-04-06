@@ -14,6 +14,7 @@ const expectedRecursive = fs.readFileSync(getFixturePath('expectedrecursive.txt'
 
 const expectedplain = fs.readFileSync(getFixturePath('expectedplain.txt'), 'utf-8');
 const jsonRecursive = fs.readFileSync(getFixturePath('expectedjson.txt'), 'utf-8');
+const myTest = fs.readFileSync(getFixturePath('expectedmytest.txt'), 'utf-8');
 
 test('gendiff JSON recursive', () => {
   expect(genDiff('__fixtures__/file1hard.json', '__fixtures__/file2hard.json')).toEqual(expectedRecursive);
@@ -29,4 +30,8 @@ test('gendiff YAML plain recursive', () => {
 
 test('gendiff YAML JSON recursive', () => {
   expect(genDiff('__fixtures__/file1hard.yaml', '__fixtures__/file2hard.yml', 'json')).toEqual(jsonRecursive);
+});
+
+test('gendiff JSON recursive with edits', () => {
+  expect(genDiff('__fixtures__/file1mytest.json', '__fixtures__/file2mytest.json', 'stylish')).toEqual(myTest);
 });

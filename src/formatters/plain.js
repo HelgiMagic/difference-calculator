@@ -1,4 +1,4 @@
-const normalizeValue = (value) => {
+const normalize = (value) => {
   if (typeof value === 'string') return `'${value}'`;
   if (Array.isArray(value)) return '[complex value]';
   return value;
@@ -10,8 +10,8 @@ const plain = (tree1) => {
       name, type, value, changed, children,
     }) => {
       const normName = path.length > 0 ? `${path}.${name}` : name;
-      const normalizedValue = normalizeValue(value);
-      const normalizedChanged = normalizeValue(changed);
+      const normalizedValue = normalize(value);
+      const normalizedChanged = normalize(changed);
       switch (type) {
         case 'added':
           return `Property '${normName}' was added with value: ${normalizedValue}`;

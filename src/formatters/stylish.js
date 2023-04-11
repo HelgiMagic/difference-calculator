@@ -1,4 +1,4 @@
-import isObject from 'lodash/isObject';
+import isObject from 'lodash/isObject.js';
 
 const generateSpaces = (depth, isClosing) => {
   const spaceCount = isClosing ? depth * 4 : depth * 4 - 2;

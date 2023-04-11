@@ -1,4 +1,4 @@
-import isObject from 'lodash/isObject';
+import isObject from 'lodash/isObject.js';
 
 const stringify = (value) => {
   if (typeof value === 'string') return `'${value}'`;

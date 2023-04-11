@@ -9,59 +9,18 @@ const generateComparedTree = (object1, object2) => {
   const result = normKeys.map((key) => {
     if (isObject(object1[key]) && isObject(object2[key])) {
       return {
-        name: key, type: 'nested', children: generateComparedTree(object1[key], object2[key]),
+        key, type: 'nested', children: generateComparedTree(object1[key], object2[key]),
       };
     }
-    if (isObject(object1[key]) && has(object2, key)) {
-      return {
-        name: key, type: 'changed', value: generateComparedTree(object1[key], object1[key]), changed: object2[key],
-      };
-    }
-    if (has(object1, key) && isObject(object2[key])) {
-      return {
-        name: key, type: 'changed', value: object1[key], changed: generateComparedTree(object2[key], object2[key]),
-      };
-    }
-    if (isObject(object1[key])) {
-      return {
-        name: key, type: 'deleted', value: generateComparedTree(object1[key], object1[key]),
-      };
-    }
-    if (isObject(object2[key])) {
-      return {
-        name: key, type: 'added', value: generateComparedTree(object2[key], object2[key]),
-      };
-    }
-    if (!has(object2, key)) {
-      return {
-        name: key,
-        type: 'deleted',
-        value: object1[key],
-      };
-    }
-    if (!has(object1, key)) {
-      return {
-        name: key,
-        type: 'added',
-        value: object2[key],
-      };
-    }
-    if (object1[key] === object2[key]) {
-      return {
-        name: key,
-        type: 'not changed',
-        value: object1[key],
-      };
-    }
-    if (object1[key] !== object2[key]) {
-      return {
-        name: key,
-        type: 'changed',
-        value: object1[key],
-        changed: object2[key],
-      };
-    }
-    return 'error';
+    if (!has(object2, key)) return { key, type: 'deleted', value1: object1[key] };
+
+    if (!has(object1, key)) return { key, type: 'added', value1: object2[key] };
+
+    if (object1[key] === object2[key]) return { key, type: 'unchanged', value1: object1[key] };
+
+    return {
+      key, type: 'changed', value1: object1[key], value2: object2[key],
+    };
   });
 
   return result;

@@ -1,28 +1,28 @@
-const normalize = (value) => {
+import isObject from 'lodash/isObject';
+
+const stringify = (value) => {
   if (typeof value === 'string') return `'${value}'`;
-  if (Array.isArray(value)) return '[complex value]';
+  if (isObject(value)) return '[complex value]';
   return value;
 };
 
 const plain = (tree1) => {
   const iter = (tree, path) => {
-    const result = tree.flatMap(({
-      name, type, value, changed, children,
-    }) => {
-      const normName = path.length > 0 ? `${path}.${name}` : name;
-      const normalizedValue = normalize(value);
-      const normalizedChanged = normalize(changed);
-      switch (type) {
+    const result = tree.flatMap((item) => {
+      const normName = path.length > 0 ? `${path}.${item.key}` : item.key;
+      switch (item.type) {
         case 'added':
-          return `Property '${normName}' was added with value: ${normalizedValue}`;
+          return `Property '${normName}' was added with value: ${stringify(item.value1)}`;
         case 'deleted':
           return `Property '${normName}' was removed`;
         case 'nested':
-          return iter(children, normName);
+          return iter(item.children, normName);
         case 'changed':
-          return `Property '${normName}' was updated. From ${normalizedValue} to ${normalizedChanged}`;
+          return `Property '${normName}' was updated. From ${stringify(item.value1)} to ${stringify(item.value2)}`;
+        case 'unchanged':
+          return null;
         default:
-          return [];
+          throw new Error(`Unknown type: '${item.type}'!`);
       }
     }, []);
     return result;

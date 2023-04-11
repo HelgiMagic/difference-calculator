@@ -1,14 +1,14 @@
 import yaml from 'js-yaml';
 
-const convertToObject = (file, extractFormat) => {
-  switch (extractFormat) {
+const convertToObject = (data, dataFormat) => {
+  switch (dataFormat) {
     case 'json':
-      return JSON.parse(file);
+      return JSON.parse(data);
     case 'yml':
     case 'yaml':
-      return yaml.load(file);
+      return yaml.load(data);
     default:
-      throw new Error(`Unknown format: '${extractFormat}'!`);
+      throw new Error(`Unknown format: '${dataFormat}'!`);
   }
 };
 

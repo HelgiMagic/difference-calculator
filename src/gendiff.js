@@ -7,11 +7,7 @@ import generateComparedTree from './tree-generator.js';
 
 const extractFormat = (filepath) => path.extname(filepath).slice(1);
 
-const isAbsolute = (filepath) => filepath.startsWith('/');
-const normalizeFilePath = (filepath) => {
-  if (isAbsolute(filepath)) return filepath;
-  return path.resolve(cwd(), filepath);
-};
+const normalizeFilePath = (filepath) => path.resolve(cwd(), filepath);
 
 const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const normFilepath1 = normalizeFilePath(filepath1);

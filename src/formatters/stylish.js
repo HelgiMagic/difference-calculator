@@ -1,38 +1,42 @@
-/* eslint-disable no-case-declarations */
-const generateSpaces = (spaceCount) => {
-  if (spaceCount < 1) return '';
+import isObject from 'lodash/isObject';
+
+const generateSpaces = (depth, isClosing) => {
+  const spaceCount = isClosing ? depth * 4 : depth * 4 - 2;
   return ' '.repeat(spaceCount);
 };
 
-const generateString = (name, value, space, specialSign) => `${space}${specialSign} ${name}: ${value}`;
+const generateString = (name, value, depth, specialSign) => {
+  if (!isObject(value)) {
+    const space = generateSpaces(depth);
+    return `${space}${specialSign} ${name}: ${value}`;
+  }
+  const keys = Object.keys(value);
+  const result = keys.map((key) => generateString(key, value[key], depth + 1, ' '));
+  const newValue = `{\n${result.join('\n')}\n${generateSpaces(depth, true)}}`;
+  return generateString(name, newValue, depth, specialSign);
+};
+
 const stylish = (treeMain) => {
   const iter = (tree, depth) => {
-    if (!Array.isArray(tree)) return tree;
-    const spaceCount = depth * 4 - 2;
-    const closingSpaceCount = (depth - 1) * 4;
-    const space = generateSpaces(spaceCount);
-    const closingSpace = generateSpaces(closingSpaceCount);
-    const result = tree.reduce((acc, {
-      name, type, value, changed, children,
-    }) => {
-      switch (type) {
+    const result = tree.flatMap((item) => {
+      switch (item.type) {
         case 'added':
-          return [...acc, generateString(name, iter(value, depth + 1), space, '+')];
+          return generateString(item.key, item.value1, depth, '+');
         case 'deleted':
-          return [...acc, generateString(name, iter(value, depth + 1), space, '-')];
-        case 'not changed':
-          return [...acc, generateString(name, value, space, ' ')];
+          return generateString(item.key, item.value1, depth, '-');
+        case 'unchanged':
+          return generateString(item.key, item.value1, depth, ' ');
         case 'nested':
-          return [...acc, generateString(name, iter(children, depth + 1), space, ' ')];
+          return generateString(item.key, iter(item.children, depth + 1), depth, ' ');
         case 'changed':
-          const string = generateString(name, iter(value, depth + 1), space, '-');
-          const secondString = generateString(name, iter(changed, depth + 1), space, '+');
-          return [...acc, string, secondString];
+          return [
+            generateString(item.key, item.value1, depth, '-'),
+            generateString(item.key, item.value2, depth, '+')];
         default:
-          throw new Error(`Unknown change: '${type}'!`);
+          throw new Error(`Unknown change: '${item.type}'!`);
       }
-    }, ['{']);
-    return `${result.join('\n')}\n${closingSpace}}`;
+    });
+    return `{\n${result.join('\n')}\n${generateSpaces(depth - 1, true)}}`;
   };
   return iter(treeMain, 1);
 };

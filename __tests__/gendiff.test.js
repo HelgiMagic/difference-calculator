@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-undef */
 import fs from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -10,26 +8,20 @@ const __dirname = dirname(__filename);
 
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 
-const expectedRecursive = fs.readFileSync(getFixturePath('expectedrecursive.txt'), 'utf-8');
-const expectedplain = fs.readFileSync(getFixturePath('expectedplain.txt'), 'utf-8');
-const myTest = fs.readFileSync(getFixturePath('expectedmytest.txt'), 'utf-8');
+const expectedStylish = fs.readFileSync(getFixturePath('expectedstylish.txt'), 'utf-8');
+const expectedPlain = fs.readFileSync(getFixturePath('expectedplain.txt'), 'utf-8');
 
-const recursive = genDiff(getFixturePath('file1hard.json'), getFixturePath('file2hard.json'));
-const recursiveYaml = genDiff(getFixturePath('file1hard.yaml'), getFixturePath('file2hard.yml'));
-const plain = genDiff(getFixturePath('file1hard.yaml'), getFixturePath('file2hard.yml'), 'plain');
-const newTest = genDiff(getFixturePath('file1mytest.json'), getFixturePath('file2mytest.json'), 'stylish');
+const jsonExtension = [getFixturePath('file1hard.json'), getFixturePath('file2hard.json')];
+const yamlExtension = [getFixturePath('file1hard.yaml'), getFixturePath('file2hard.yml')];
+
 const tests = [
-  { result: recursive, expected: expectedRecursive, name: 'standart' },
-  { result: recursiveYaml, expected: expectedRecursive, name: 'yaml' },
-  { result: newTest, expected: myTest, name: 'my test' },
-  { result: plain, expected: expectedplain, name: 'plain format' },
+  { data: jsonExtension, name: 'json' },
+  { data: yamlExtension, name: 'yaml' },
 ];
 
-test.each(tests)('gendiff $name', ({ result, expected }) => {
-  expect(result).toEqual(expected);
-});
-
-test('gendiff json format', () => {
-  const data = genDiff(getFixturePath('file1hard.yaml'), getFixturePath('file2hard.yml'), 'json');
-  expect(() => JSON.parse(data)).not.toThrow();
+test.each(tests)('gendiff .$name', ({ data: [arg1, arg2] }) => {
+  expect(genDiff(arg1, arg2)).toEqual(expectedStylish);
+  expect(genDiff(arg1, arg2, 'stylish')).toEqual(expectedStylish);
+  expect(genDiff(arg1, arg2, 'plain')).toEqual(expectedPlain);
+  expect(() => JSON.parse(genDiff(arg1, arg2, 'json'))).not.toThrow();
 });

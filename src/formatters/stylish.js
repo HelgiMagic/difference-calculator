@@ -21,11 +21,11 @@ const stylish = (treeMain) => {
     const result = tree.flatMap((item) => {
       switch (item.type) {
         case 'added':
-          return generateString(item.key, item.value1, depth, '+');
+          return generateString(item.key, item.value, depth, '+');
         case 'deleted':
-          return generateString(item.key, item.value1, depth, '-');
+          return generateString(item.key, item.value, depth, '-');
         case 'unchanged':
-          return generateString(item.key, item.value1, depth, ' ');
+          return generateString(item.key, item.value, depth, ' ');
         case 'nested':
           return generateString(item.key, iter(item.children, depth + 1), depth, ' ');
         case 'changed':

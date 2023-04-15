@@ -1,4 +1,4 @@
-import isPlainObject from 'lodash/isPlainObject';
+import isPlainObject from 'lodash/isPlainObject.js';
 import has from 'lodash/has.js';
 import sortBy from 'lodash/sortBy.js';
 

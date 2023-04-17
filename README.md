@@ -38,13 +38,9 @@ gendiff -h
 ```
 
 ### Examples of usage
-gendiff example:
-[![asciicast](https://asciinema.org/a/Zk1NKCizw8vlf4QZRglZZg0UM.svg)](https://asciinema.org/a/Zk1NKCizw8vlf4QZRglZZg0UM)
-gendiff yaml example:
-[![asciicast](https://asciinema.org/a/JIJZNSwhCntKFg6PYcxjIAQcQ.svg)](https://asciinema.org/a/JIJZNSwhCntKFg6PYcxjIAQcQ)
-gendiff recursive example:
-[![asciicast](https://asciinema.org/a/WvCuA7nbDV9FzlNbM3THvbpNv.svg)](https://asciinema.org/a/WvCuA7nbDV9FzlNbM3THvbpNv)
+gendiff stylish format:
+[![asciicast](https://asciinema.org/a/Uoxk7GHgf8Z0oT1N4CT5UNfDp.svg)](https://asciinema.org/a/Uoxk7GHgf8Z0oT1N4CT5UNfDp)
 gendiff plain format:
-[![asciicast](https://asciinema.org/a/vnInIqtHygbRuk1kpM2nscFVu.svg)](https://asciinema.org/a/vnInIqtHygbRuk1kpM2nscFVu)
+[![asciicast](https://asciinema.org/a/578100.svg)](https://asciinema.org/a/578100)
 gendiff json format:
-[![asciicast](https://asciinema.org/a/FF3q0QbUnaXhWqdZE7DbZvPiw.svg)](https://asciinema.org/a/FF3q0QbUnaXhWqdZE7DbZvPiw)
+[![asciicast](https://asciinema.org/a/578099.svg)](https://asciinema.org/a/578099)

@@ -17,7 +17,7 @@ A project that shows the difference between two files. It supports JSON and YAML
 ```
 git clone https://github.com/HelgiMagic/frontend-project-46.git
 ```
-3. To start using this project, copy and paste the following commands into the command line. This command will install all the necessary modules for the project to work.
+3. To start using this project, copy and paste the following commands into the command line. This commands will install all the necessary modules for the project to work.
 ```
 npm ci
 npm link

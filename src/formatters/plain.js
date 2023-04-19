@@ -3,23 +3,23 @@ import isObject from 'lodash/isObject.js';
 const stringify = (value) => {
   if (typeof value === 'string') return `'${value}'`;
   if (isObject(value)) return '[complex value]';
-  return `${value}`;
+  return String(value);
 };
+
+const getPropertyName = (property, parents) => [...parents, property].join('.');
 
 const plain = (tree1) => {
   const iter = (tree, path) => {
     const result = tree.flatMap((item) => {
-      const newPath = [...path, item.key];
-      const normName = newPath.join('.');
       switch (item.type) {
         case 'added':
-          return `Property '${normName}' was added with value: ${stringify(item.value)}`;
+          return `Property '${getPropertyName(item.key, path)}' was added with value: ${stringify(item.value)}`;
         case 'deleted':
-          return `Property '${normName}' was removed`;
+          return `Property '${getPropertyName(item.key, path)}' was removed`;
         case 'nested':
-          return iter(item.children, newPath);
+          return iter(item.children, [...path, item.key]);
         case 'changed':
-          return `Property '${normName}' was updated. From ${stringify(item.value1)} to ${stringify(item.value2)}`;
+          return `Property '${getPropertyName(item.key, path)}' was updated. From ${stringify(item.value1)} to ${stringify(item.value2)}`;
         case 'unchanged':
           return null;
         default:

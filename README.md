@@ -15,7 +15,7 @@ A project that shows the difference between two files. It supports JSON and YAML
 1. Install [node.js](https://nodejs.org/). Use the instructions on the website.
 2. Copy the repository to your computer using git clone:
 ```
-git clone https://github.com/HelgiMagic/frontend-project-46.git
+git clone https://github.com/HelgiMagic/difference-calculator.git
 ```
 3. To start using this project, copy and paste the following commands into the command line. This commands will install all the necessary modules for the project to work.
 ```

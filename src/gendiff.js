@@ -6,17 +6,17 @@ import generateComparedTree from './tree-generator.js';
 
 const extractFormat = (filePath) => path.extname(filePath).slice(1);
 
-const getFullFilePath = (filePath) => path.resolve(filePath);
+const getAbsolutePath = (filePath) => path.resolve(filePath);
 
 const genDiff = (filePath1, filePath2, format = 'stylish') => {
-  const fullFilePath1 = getFullFilePath(filePath1);
-  const fullFilePath2 = getFullFilePath(filePath2);
+  const absolutePath1 = getAbsolutePath(filePath1);
+  const absolutePath2 = getAbsolutePath(filePath2);
 
-  const file1 = fs.readFileSync(fullFilePath1);
-  const file2 = fs.readFileSync(fullFilePath2);
+  const file1 = fs.readFileSync(absolutePath1);
+  const file2 = fs.readFileSync(absolutePath2);
 
-  const file1exFormat = extractFormat(fullFilePath1);
-  const file2exFormat = extractFormat(fullFilePath2);
+  const file1exFormat = extractFormat(absolutePath1);
+  const file2exFormat = extractFormat(absolutePath2);
 
   const object1 = convertToObject(file1, file1exFormat);
   const object2 = convertToObject(file2, file2exFormat);

@@ -12,8 +12,8 @@ const generateString = (name, value, depth, specialSign) => {
   }
   const keys = Object.keys(value);
   const result = keys.map((key) => generateString(key, value[key], depth + 1, ' '));
-  const newValue = `{\n${result.join('\n')}\n${generateSpaces(depth, true)}}`;
-  return generateString(name, newValue, depth, specialSign);
+  const string = `{\n${result.join('\n')}\n${generateSpaces(depth, true)}}`;
+  return generateString(name, string, depth, specialSign);
 };
 
 const stylish = (treeMain) => {

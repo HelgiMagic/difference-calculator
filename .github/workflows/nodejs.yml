@@ -6,7 +6,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - run: make install
+      - run: make installDeps
       - run: make lint
       - run: make test
       - name: Test & publish code coverage

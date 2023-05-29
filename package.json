@@ -5,8 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
-    "install": "npm ci && npm link"
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "author": "Oleg Mukhametshin",
   "license": "ISC",

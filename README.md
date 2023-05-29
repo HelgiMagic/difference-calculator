@@ -1,8 +1,8 @@
 ### Hexlet tests and linter status:
-[![Actions Status](https://github.com/HelgiMagic/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/HelgiMagic/frontend-project-46/actions)
-[![Node CI](https://github.com/HelgiMagic/frontend-project-46/actions/workflows/nodejs.yml/badge.svg)](https://github.com/HelgiMagic/frontend-project-46/actions/workflows/nodejs.yml)
-<a href="https://codeclimate.com/github/HelgiMagic/frontend-project-11/maintainability"><img src="https://api.codeclimate.com/v1/badges/83dad3dc75799c9110d7/maintainability" /></a>
-<a href="https://codeclimate.com/github/HelgiMagic/frontend-project-11/test_coverage"><img src="https://api.codeclimate.com/v1/badges/83dad3dc75799c9110d7/test_coverage" /></a>
+[![hexlet-check](https://github.com/HelgiMagic/difference-calculator/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/HelgiMagic/difference-calculator/actions/workflows/hexlet-check.yml)
+[![Node CI](https://github.com/HelgiMagic/difference-calculator/actions/workflows/nodejs.yml/badge.svg)](https://github.com/HelgiMagic/difference-calculator/actions/workflows/nodejs.yml)
+<a href="https://codeclimate.com/github/HelgiMagic/difference-calculator/maintainability"><img src="https://api.codeclimate.com/v1/badges/97fd75756a39f45a2137/maintainability" /></a>
+<a href="https://codeclimate.com/github/HelgiMagic/difference-calculator/test_coverage"><img src="https://api.codeclimate.com/v1/badges/97fd75756a39f45a2137/test_coverage" /></a>
 
 ### What is it?
 
